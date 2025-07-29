@@ -3,6 +3,7 @@ import {Singleton} from "db://assets/scripts/core/Singleton";
 
 const {ccclass, property} = _decorator;
 
+/*Deprecated: using Button + SceneLoaderButton*/
 @ccclass('SceneManager')
 export class SceneManager extends Singleton<SceneManager> {
     @property
@@ -19,7 +20,7 @@ export class SceneManager extends Singleton<SceneManager> {
     public loadMenu() {
         this.loadScene(this.menuScene);
     }
-    
+
     public loadQuiz() {
         this.loadScene(this.quizScene);
     }

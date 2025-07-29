@@ -1,11 +1,9 @@
-import {_decorator, Button, Component, director} from 'cc';
+import {_decorator, Button, Component} from 'cc';
+import {SceneManager} from "db://assets/scripts/scene/SceneManager";
 
 const {ccclass, property} = _decorator;
 
-/*
-* Deprecated: using SceneManager instead.
-* https://docs.cocos.com/creator/3.8/manual/en/getting-started/first-game-2d/#handle-button-click-event
-* */
+/*deprecated, using SceneLoaderButton*/
 @ccclass('MainMenuHandler')
 export class MainMenuHandler extends Component {
     @property(Button)
@@ -25,11 +23,10 @@ export class MainMenuHandler extends Component {
     }
 
     OpenQuiz() {
-        console.log("OpenQuiz called");
-        director.loadScene(this._quizSceneName);
+        SceneManager.instance.loadScene(this._quizSceneName);
     }
 
     OpenSlots() {
-        director.loadScene(this._slotsSceneName);
+        SceneManager.instance.loadScene(this._slotsSceneName);
     }
 }
