@@ -1,0 +1,123 @@
+﻿{
+  "questions": [
+    {
+      "text": "Which of the following are programming languages?",
+      "answers": [
+        {
+          "text": "TypeScript",
+          "isCorrect": true
+        },
+        {
+          "text": "ScriptType",
+          "isCorrect": false
+        },
+        {
+          "text": "BuggyType",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "Which language has not been created by Anders Hejlsberg?",
+      "answers": [
+        {
+          "text": "C++",
+          "isCorrect": true
+        },
+        {
+          "text": "TypeScript",
+          "isCorrect": false
+        },
+        {
+          "text": "C#",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "Where do you work?",
+      "answers": [
+        {
+          "text": "Zitro",
+          "isCorrect": true
+        },
+        {
+          "text": "Ortiz",
+          "isCorrect": false
+        },
+        {
+          "text": "Tizro",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What's the best slots company?",
+      "answers": [
+        {
+          "text": "Zitro",
+          "isCorrect": true
+        },
+        {
+          "text": "Ortiz",
+          "isCorrect": false
+        },
+        {
+          "text": "Tizro",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What's 1+1?",
+      "answers": [
+        {
+          "text": "2",
+          "isCorrect": true
+        },
+        {
+          "text": "3",
+          "isCorrect": false
+        },
+        {
+          "text": "4",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "What's 2+2?",
+      "answers": [
+        {
+          "text": "2",
+          "isCorrect": false
+        },
+        {
+          "text": "3",
+          "isCorrect": false
+        },
+        {
+          "text": "4",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "text": "What's 3+3?",
+      "answers": [
+        {
+          "text": "2",
+          "isCorrect": false
+        },
+        {
+          "text": "3",
+          "isCorrect": false
+        },
+        {
+          "text": "6",
+          "isCorrect": true
+        }
+      ]
+    }
+  ]
+}
