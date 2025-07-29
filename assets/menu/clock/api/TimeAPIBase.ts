@@ -1,7 +1,7 @@
 ﻿export type TimeData = {
-    hour: string;
-    minute: string;
-    seconds: string;
+    hour: number;
+    minute: number;
+    seconds: number;
 };
 
 export abstract class TimeAPIBase {
