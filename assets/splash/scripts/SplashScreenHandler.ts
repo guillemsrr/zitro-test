@@ -1,5 +1,6 @@
-import {_decorator, Component, director} from 'cc';
+import {_decorator, Component} from 'cc';
 import {ProgressBarHandler} from "db://assets/splash/scripts/ProgressBarHandler";
+import {SceneManager} from "db://assets/scripts/SceneManager";
 
 const {ccclass, property} = _decorator;
 
@@ -8,13 +9,10 @@ export class SplashScreenHandler extends Component {
 
     @property({type: ProgressBarHandler, visible: true})
     _progressBar: ProgressBarHandler | null = null;
-    
-    @property({visible: true})
-    _sceneToLoad: string = "menu";
 
     start() {
         this._progressBar.onLoadComplete = () => {
-            director.loadScene(this._sceneToLoad);
+            SceneManager.instance.loadMenu();
         }
     }
 }

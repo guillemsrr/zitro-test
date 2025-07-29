@@ -2,6 +2,10 @@ import {_decorator, Button, Component, director} from 'cc';
 
 const {ccclass, property} = _decorator;
 
+/*
+* Deprecated: using SceneManager instead.
+* https://docs.cocos.com/creator/3.8/manual/en/getting-started/first-game-2d/#handle-button-click-event
+* */
 @ccclass('MainMenuHandler')
 export class MainMenuHandler extends Component {
     @property(Button)
@@ -14,9 +18,6 @@ export class MainMenuHandler extends Component {
 
     @property({visible: true})
     _slotsSceneName: string = "slots";
-
-    //Could also approach this way:
-    //https://docs.cocos.com/creator/3.8/manual/en/getting-started/first-game-2d/#handle-button-click-event
 
     start() {
         this.quizButton.node.on(Button.EventType.CLICK, this.OpenQuiz, this);
