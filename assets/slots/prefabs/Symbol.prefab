@@ -137,30 +137,6 @@
     "fileId": "5dNoHnO5pDgIPWCv9MZFmY"
   },
   {
-    "__type__": "c0a69JfFNpC+LYDACCce3Th",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "__prefab": {
-      "__id__": 7
-    },
-    "symbolAtlas": null,
-    "sprite": {
-      "__id__": 4
-    },
-    "uiTransform": {
-      "__id__": 2
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CompPrefabInfo",
-    "fileId": "8aETZtdD5FMZTYFBgETDB9"
-  },
-  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -169,7 +145,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 9
+      "__id__": 7
     },
     "_alignFlags": 40,
     "_target": null,
@@ -194,6 +170,33 @@
   {
     "__type__": "cc.CompPrefabInfo",
     "fileId": "c09rx2TzFB4ZZdAVMppVdB"
+  },
+  {
+    "__type__": "15b1evVEtJDPbJa1bVhS6Hy",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 9
+    },
+    "symbolAtlas": {
+      "__uuid__": "7aea5221-1638-484f-bfc5-70fff23e3821",
+      "__expectedType__": "cc.SpriteAtlas"
+    },
+    "sprite": {
+      "__id__": 4
+    },
+    "uiTransform": {
+      "__id__": 2
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "0dSWLUaehOHbrbVBaakti4"
   },
   {
     "__type__": "cc.PrefabInfo",

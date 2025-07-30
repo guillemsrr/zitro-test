@@ -1,5 +1,6 @@
 import {_decorator, Button, Component, Node} from 'cc';
 import {ReelHandler} from "db://assets/slots/ReelHandler";
+import {SlotSymbol} from "db://assets/slots/SlotSymbol";
 
 const {ccclass, property} = _decorator;
 
@@ -12,18 +13,25 @@ export class SlotsMachine extends Component {
     @property({type: Button, visible: true})
     _spinButton: Button;
 
+    @property({type: Button, visible: true})
+    _forceWinButton: Button;
+
     @property({visible: true})
     _spinDelay: number = 2;
 
     private _reels: ReelHandler[] = [];
 
+    public onWin: () => void = () => {
+    };
+
     start() {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
         this._spinButton.node.on(Button.EventType.CLICK, this.startSpinning, this);
+        this._forceWinButton.node.on(Button.EventType.CLICK, this.startWinSpin, this);
     }
 
-    startSpinning() {
-        this._spinButton.interactable = false;
+    private startSpinning() {
+        this.deactivateButtons();
 
         for (let i = 0; i < this._reels.length; i++) {
             this.scheduleOnce(() => {
@@ -43,11 +51,40 @@ export class SlotsMachine extends Component {
             this.scheduleOnce(() => {
                 this._reels[i].stop();
 
-                // Re-enable button when last reel stops
                 if (i === this._reels.length - 1) {
-                    this._spinButton.interactable = true;
+                    this.checkPrizes();
                 }
             }, stopStartDelay + i * this._spinDelay);
         }
+    }
+    
+    private startWinSpin(){
+        //TODO: implement a forced win spin
+    }
+
+    private checkPrizes() {
+        let centerSymbols: SlotSymbol[] = [];
+        for (let i = 0; i < this._reels.length; i++) {
+            const reel: ReelHandler = this._reels[i];
+            const centerSymbol: SlotSymbol = reel.getCenterSymbol();
+            centerSymbols.push(centerSymbol);
+        }
+
+        if (centerSymbols[0].equals(centerSymbols[1]) && centerSymbols[1].equals(centerSymbols[2])) {
+            this.onWin();
+            return;
+        }
+        
+        this.activateButtons();
+    }
+
+    public activateButtons() {
+        this._spinButton.interactable = true;
+        this._forceWinButton.interactable = true;
+    }
+
+    private deactivateButtons() {
+        this._spinButton.interactable = false;
+        this._forceWinButton.interactable = false;
     }
 }

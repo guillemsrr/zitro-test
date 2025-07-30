@@ -1,9 +1,9 @@
-﻿import {_decorator, Component, Node, Sprite, SpriteAtlas, SpriteFrame, UITransform} from 'cc';
+﻿import {_decorator, Component, Sprite, SpriteAtlas, UITransform} from 'cc';
 
 const {ccclass, property} = _decorator;
 
-@ccclass('Symbol')
-export class Symbol extends Component {
+@ccclass('SlotSymbol')
+export class SlotSymbol extends Component {
 
     @property(SpriteAtlas)
     symbolAtlas: SpriteAtlas | null = null;
@@ -13,6 +13,8 @@ export class Symbol extends Component {
 
     @property(UITransform)
     uiTransform: UITransform;
+
+    identifier: number = 0;
 
     start() {
         if (!this.sprite || !this.sprite.spriteFrame || !this.uiTransform) return;
@@ -36,4 +38,7 @@ export class Symbol extends Component {
         }
     }
 
+    equals(slotSymbol: SlotSymbol) {
+        return this.identifier === slotSymbol.identifier;
+    }
 }
