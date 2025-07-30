@@ -30,6 +30,7 @@ export class QuizHandler extends Component {
     startRandomQuestion() {
         if (this._unaskedQuestions.length === 0) {
 
+            //TODO: game over, all questions have been asked
             this.resetUnaskedQuestions();
         }
 
