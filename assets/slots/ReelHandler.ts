@@ -32,6 +32,7 @@ export class ReelHandler extends Component {
 
     private _symbols: Symbol[] = [];
     private _isSpinning: boolean = false;
+    private _currentTween: Tween<any> | null = null;
 
     onLoad() {
         this._symbolsParent.destroyAllChildren();
@@ -63,7 +64,7 @@ export class ReelHandler extends Component {
 
         const targetAlpha = 1;
 
-        tween(tweenAlpha)
+        this._currentTween = tween(tweenAlpha)
             .to(this._spinDuration, {alpha: targetAlpha}, {
                 easing: 'quadInOut',
                 onUpdate: () => {
@@ -88,6 +89,24 @@ export class ReelHandler extends Component {
                 }
             })
             .start();
+    }
+
+    stop() {
+        if (!this._isSpinning) return;
+
+        this._isSpinning = false;
+
+        if (this._currentTween) {
+            this._currentTween.stop();
+            this._currentTween = null;
+        }
+    }
+
+    private snapToGrid() {
+        for (let i = 0; i < this._symbols.length; i++) {
+            const y = -i * this._symbolHeight - this._symbolHeight / 2;
+            this._symbols[i].node.setPosition(0, y, 0);
+        }
     }
 
     private getRandomSymbol(): SpriteFrame {
