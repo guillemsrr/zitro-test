@@ -19,6 +19,9 @@ export class SlotsMachine extends Component {
     @property({visible: true})
     _spinDelay: number = 2;
 
+    @property({visible: true})
+    _spinTime: number = 3;
+
     private _reels: ReelHandler[] = [];
 
     public onWin: () => void = () => {
@@ -34,32 +37,42 @@ export class SlotsMachine extends Component {
         this.deactivateButtons();
 
         for (let i = 0; i < this._reels.length; i++) {
+            this._reels[i].reset();
             this.scheduleOnce(() => {
                 this._reels[i].spin();
             }, i * this._spinDelay);
         }
 
-        /*El giro se realizará de izquierda a derecha y con un intervalo entre ellos de 2 segundos.
-         Estarán un mínimo de 3 segundos todos los rodillos girando.
-         La parada se realizará también de izquierda a derecha manteniendo el tiempo de 2 segundos entre ellos.*/
-
-        const lastStartTime = (this._reels.length - 1) * this._spinDelay;
-        const minSpinTime = 3;
-
-        const stopStartDelay = lastStartTime + minSpinTime;
+        const stopDelay = this.getStopDelay();
         for (let i = 0; i < this._reels.length; i++) {
             this.scheduleOnce(() => {
                 this._reels[i].stop();
 
                 if (i === this._reels.length - 1) {
-                    this.checkPrizes();
+                    this.scheduleOnce(() => {
+                        this.checkPrizes();
+                    }, 1);
                 }
-            }, stopStartDelay + i * this._spinDelay);
+            }, stopDelay + i * this._spinDelay);
         }
     }
-    
-    private startWinSpin(){
-        //TODO: implement a forced win spin
+
+    private getStopDelay() {
+        const lastStartTime = (this._reels.length - 1) * this._spinDelay;
+        return lastStartTime + this._spinTime;
+    }
+
+    private startWinSpin() {
+        this.startSpinning();
+
+        const stopDelay = this.getStopDelay();
+        const winningSymbolIndex = this._reels[0].getRandomSymbolIndex();
+        const positionIndex = 3;
+        for (let i = 0; i < this._reels.length; i++) {
+            this.scheduleOnce(() => {
+                this._reels[i].forceSymbolAtPositionIndex(winningSymbolIndex, positionIndex);
+            }, stopDelay + i * this._spinDelay);
+        }
     }
 
     private checkPrizes() {
@@ -72,9 +85,16 @@ export class SlotsMachine extends Component {
 
         if (centerSymbols[0].equals(centerSymbols[1]) && centerSymbols[1].equals(centerSymbols[2])) {
             this.onWin();
+            centerSymbols.forEach(symbol => {
+                symbol.setWinVisuals();
+            })
             return;
         }
-        
+
+        centerSymbols.forEach(symbol => {
+            symbol.setLooseVisuals();
+        })
+
         this.activateButtons();
     }
 

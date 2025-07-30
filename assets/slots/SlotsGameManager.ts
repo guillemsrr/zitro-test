@@ -15,11 +15,11 @@ export class SlotsGameManager extends Component {
     start() {
         this.slotMachine.onWin = () => {
             //TODO: show win animation
+            console.log("WIN!");
             
             this.scheduleOnce(() => {
                 this.slotMachine.activateButtons();
             }, this.resetDelay);
         }
-
     }
 }

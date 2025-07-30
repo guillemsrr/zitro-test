@@ -5,7 +5,6 @@ const {ccclass, property} = _decorator;
 
 @ccclass('ReelHandler')
 export class ReelHandler extends Component {
-
     @property({type: Node, visible: true})
     _symbolsParent: Node;
 
@@ -31,10 +30,11 @@ export class ReelHandler extends Component {
     _spinSpeed: number = 1000;
 
     private _symbols: SlotSymbol[] = [];
+
     private _isSpinning: boolean = false;
     private _currentTween: Tween<any> | null = null;
-
     private _spinningSpeed: number = 0;
+
     private _targetSpeed: number = 1000;
     private _isStopping: boolean = false;
 
@@ -74,6 +74,12 @@ export class ReelHandler extends Component {
 
             symbol.node.setPosition(0, newY, 0);
         }
+    }
+
+    reset() {
+        this._symbols.forEach(symbol => {
+            symbol.reset();
+        })
     }
 
     spin() {
@@ -123,8 +129,24 @@ export class ReelHandler extends Component {
         if (this._symbols.length === 0) {
             return null;
         }
-        const centerIndex = Math.floor(this._symbols.length / 2);
+        const centerIndex = 1;
         return this._symbols[centerIndex];
+    }
+
+    getRandomSymbolIndex(): number {
+        return Math.floor(Math.random() * this._slotIcons.length);
+    }
+
+    forceSymbolAtPositionIndex(winningSymbolIndex: number, positionIndex: number) {
+        const height = -this._symbolHeight * positionIndex;
+        const closestSymbol = this._symbols.reduce((prev, curr) => {
+            return Math.abs(curr.node.position.y - height) < Math.abs(prev.node.position.y - height) ? curr : prev;
+        });
+
+        closestSymbol.iconSprite.spriteFrame = this._slotIcons[winningSymbolIndex];
+        closestSymbol.identifier = winningSymbolIndex;
+
+        //closestSymbol.setBackgroundColor(Color.BLUE);
     }
 
     private reorderReel() {
@@ -146,8 +168,9 @@ export class ReelHandler extends Component {
     }
 
     private updateSymbol(symbol: SlotSymbol) {
-        const index = Math.floor(Math.random() * this._slotIcons.length);
-        symbol.sprite.spriteFrame = this._slotIcons[index];
+        const index = this.getRandomSymbolIndex();
+        symbol.iconSprite.spriteFrame = this._slotIcons[index];
         symbol.identifier = index;
     }
+
 }
