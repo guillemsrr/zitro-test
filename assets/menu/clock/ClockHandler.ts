@@ -11,18 +11,28 @@ export class ClockHandler extends Component {
 
     private _timeAPI: TimeAPIBase = new TimeAPI();
 
+    private _isFetching: boolean = false;
+    private _fetchInterval: number = 1;
+
     start() {
         this.timeLabel.string = "Fetching current time...";
-        this.schedule(this.fetchTime, 1);
+        this.schedule(this.fetchTime, this._fetchInterval);
     }
-    
-    onDisable(){
+
+    onDisable() {
         this.unschedule(this.fetchTime);
     }
 
     async fetchTime() {
+        if (this._isFetching) {
+            return;
+        }
+        
+        this._isFetching = true;
         const time = await this._timeAPI.getCurrentTime();
-        if (!time) {
+
+        this._isFetching = false;
+        if (!time || !this.timeLabel) {
             return;
         }
         this.timeLabel.string = `${this.getTimeString(time.hour)}:${this.getTimeString(time.minute)}:${this.getTimeString(time.seconds)}`;
