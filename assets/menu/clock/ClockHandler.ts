@@ -1,5 +1,5 @@
 ﻿import {_decorator, Component, Label} from 'cc';
-import {TimeAPIBase} from "db://assets/menu/clock/api/TimeAPIBase";
+import {TimeAPIBase, TimeData} from "db://assets/menu/clock/api/TimeAPIBase";
 import {TimeAPI} from "db://assets/menu/clock/api/TimeAPI";
 
 const {ccclass, property} = _decorator;
@@ -9,7 +9,7 @@ export class ClockHandler extends Component {
     @property(Label)
     timeLabel: Label | null = null;
 
-    private _timeAPI: TimeAPIBase = new TimeAPI();
+    private _timeAPI: TimeAPIBase = new TimeAPI(); //or WorldTimeAPI
 
     private _isFetching: boolean = false;
     private _fetchInterval: number = 1;
@@ -27,10 +27,9 @@ export class ClockHandler extends Component {
         if (this._isFetching) {
             return;
         }
-        
-        this._isFetching = true;
-        const time = await this._timeAPI.getCurrentTime();
 
+        this._isFetching = true;
+        const time: TimeData = await this._timeAPI.getCurrentTime();
         this._isFetching = false;
         if (!time || !this.timeLabel) {
             return;

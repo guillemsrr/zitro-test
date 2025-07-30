@@ -8,6 +8,10 @@ export class WorldTimeAPI extends TimeAPI {
 
     async getCurrentTime(): Promise<TimeData> {
         const data = await this.getData();
+        if (!data) {
+            return null;
+        }
+        
         //TODO
         const time: TimeData = {
             hour: data.hour,
