@@ -1062,7 +1062,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "bfaa53dd-3114-47df-b137-8ed0dcf807cd@f9941",
+      "__uuid__": "eb5c7aab-121c-42fb-9769-5c6c116b87a3@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -1200,10 +1200,9 @@
       }
     ],
     "_numberSymbols": 5,
-    "_totalSpinTime": 3,
     "_symbolHeight": 120,
-    "acceleration": 0,
-    "maxSpinSpeed": 300,
+    "_spinDuration": 3,
+    "_spinSpeed": 1000,
     "_id": ""
   },
   {

@@ -12,6 +12,9 @@ export class SlotsMachine extends Component {
     @property({type: Button, visible: true})
     _spinButton: Button;
 
+    @property({visible: true})
+    _spinDelay: number = 2;
+
     private _reels: ReelHandler[] = [];
 
     start() {
@@ -20,9 +23,20 @@ export class SlotsMachine extends Component {
     }
 
     startSpinning() {
-        //this._spinButton.interactable = false;
-        for (let reel of this._reels) {
-            reel.spin();
+        this._spinButton.interactable = false;
+        this.spinReelsSequentially(0);
+    }
+
+    private spinReelsSequentially(index: number) {
+        if (index >= this._reels.length) {
+            this._spinButton.interactable = true;
+            return;
         }
+
+        this._reels[index].spin();
+
+        this.scheduleOnce(() => {
+            this.spinReelsSequentially(index + 1);
+        }, this._spinDelay);
     }
 }

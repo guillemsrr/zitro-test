@@ -90,9 +90,7 @@ export class ReelHandler extends Component {
             .start();
     }
 
-    private getRandomSymbol()
-        :
-        SpriteFrame {
+    private getRandomSymbol(): SpriteFrame {
         const index = Math.floor(Math.random() * this._slotIcons.length);
         return this._slotIcons[index];
     }
