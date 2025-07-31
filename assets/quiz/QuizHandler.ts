@@ -1,7 +1,8 @@
-import {_decorator, Button, Component, JsonAsset, Label, resources} from 'cc';
+import {_decorator, Button, Component, JsonAsset, Label, resources, EventTarget} from 'cc';
 import {QuestionData} from "db://assets/quiz/data/QuestionData";
 import {AnswerData} from "db://assets/quiz/data/AnswerData";
 import {AnswerButtonHandler} from "db://assets/quiz/AnswerButtonHandler";
+import {QuizVisualsHandler} from "db://assets/quiz/QuizVisualsHandler";
 
 const {ccclass, property} = _decorator;
 
@@ -19,6 +20,9 @@ export class QuizHandler extends Component {
     @property(JsonAsset)
     quizJson: JsonAsset | null = null;
 
+    @property({type: QuizVisualsHandler, visible: true})
+    _quizVisualsHandler: QuizVisualsHandler;
+
     start() {
         //TODO: maybe use resources.load to load the JSON file dynamically
         const data = this.quizJson.json as { questions: QuestionData[] };
@@ -28,6 +32,8 @@ export class QuizHandler extends Component {
     }
 
     startRandomQuestion() {
+        this.deActivateButtons();
+
         if (this._unaskedQuestions.length === 0) {
 
             //TODO: game over, all questions have been asked
@@ -36,9 +42,7 @@ export class QuizHandler extends Component {
 
         const randomIndex: number = Math.floor(Math.random() * this._unaskedQuestions.length);
         const question: QuestionData = this._unaskedQuestions[randomIndex];
-
         this._unaskedQuestions.splice(randomIndex, 1);
-
         this.questionLabel.string = question.text;
 
         let answers = [...question.answers]
@@ -55,6 +59,20 @@ export class QuizHandler extends Component {
                 this.handleAnswerButton(answer, answerButtonHandler);
             });
         });
+
+        this._quizVisualsHandler.startQuestionAnimation(this.activateButtons.bind(this));
+    }
+
+    private deActivateButtons() {
+        this.answerButtons.forEach(answerButton => {
+            answerButton.button.interactable = false;
+        })
+    }
+
+    private activateButtons() {
+        this.answerButtons.forEach(answerButton => {
+            answerButton.button.interactable = true;
+        })
     }
 
     private resetUnaskedQuestions() {
@@ -69,13 +87,15 @@ export class QuizHandler extends Component {
             answerButtonHandler.playIncorrectAnimation();
         }
 
+        this.deActivateButtons();
+        this.unsubcribeButtonsClickEvents();
+        
+        this._quizVisualsHandler.endQuestionAnimation(this.startRandomQuestion.bind(this));
+    }
+
+    private unsubcribeButtonsClickEvents() {
         this.answerButtons.forEach(answerButton => {
             answerButton.button.node.off(Button.EventType.CLICK);
-            answerButton.button.interactable = false;
         });
-
-        this.scheduleOnce(() => {
-            this.startRandomQuestion();
-        }, 1);
     }
 }

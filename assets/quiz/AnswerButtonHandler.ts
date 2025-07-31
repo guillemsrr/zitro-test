@@ -60,7 +60,6 @@ export class AnswerButtonHandler extends Component {
     }
 
     public reset() {
-        this.button.interactable = true;
         this.sprite.color = this.originalColor;
         this.button.normalColor = this.originalColor;
         this.node.scale = this.originalScale;
