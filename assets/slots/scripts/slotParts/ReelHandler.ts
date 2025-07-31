@@ -1,4 +1,4 @@
-﻿import {_decorator, Component, Node, SpriteFrame, instantiate, Prefab, Layout, tween, Tween} from 'cc';
+﻿import {_decorator, Component, Node, SpriteFrame, instantiate, Prefab, Layout, tween, Tween, Vec3, Color} from 'cc';
 import {SlotSymbol} from 'db://assets/slots/scripts/slotParts/SlotSymbol';
 
 const {ccclass, property} = _decorator;
@@ -26,11 +26,16 @@ export class ReelHandler extends Component {
     @property({visible: true})
     private _spinSpeed: number = 1500;
 
+    @property({visible: true})
+    private _spinDownside: boolean = false;
+
     private _symbols: SlotSymbol[] = [];
 
     private _isSpinning: boolean = false;
     private _currentTween: Tween<any> | null = null;
     private _spinningSpeed: number = 0;
+    private _spinAccelerationDuration: number = 0.5;
+    private _finalSymbolAdjustmentTime: number = 0.25;
 
     private _isStopping: boolean = false;
 
@@ -57,15 +62,26 @@ export class ReelHandler extends Component {
     update(dt: number) {
         if (!this._isSpinning) return;
 
-        const deltaY = this._spinningSpeed * dt;
+        let deltaY = this._spinningSpeed * dt;
+        if (this._spinDownside) {
+            deltaY *= -1;
+        }
 
         for (const symbol of this._symbols) {
             let pos = symbol.node.position;
             let newY = pos.y + deltaY;
 
-            if (newY > this._symbolHeight / 2) {
-                newY -= this._numberSymbols * this._symbolHeight;
-                this.updateSymbol(symbol);
+            if (this._spinDownside) {
+                if (newY < -this._symbolHeight * 3 - this._symbolHeight / 2) {
+                    newY += this._numberSymbols * this._symbolHeight;
+                    this.updateSymbol(symbol);
+                }
+            }
+            else {
+                if (newY > this._symbolHeight / 2) {
+                    newY -= this._numberSymbols * this._symbolHeight;
+                    this.updateSymbol(symbol);
+                }
             }
 
             symbol.node.setPosition(0, newY, 0);
@@ -79,13 +95,16 @@ export class ReelHandler extends Component {
     }
 
     spin() {
-        if (this._isSpinning) return;
+        if (this._isSpinning) {
+            return;
+        }
         this._isSpinning = true;
         this._isStopping = false;
 
+        this.resetCurrentTween();
         let obj = {speed: 0};
         this._currentTween = tween(obj)
-            .to(0.5, {speed: this._spinSpeed}, {
+            .to(this._spinAccelerationDuration, {speed: this._spinSpeed}, {
                 easing: 'quadIn',
                 onUpdate: () => {
                     this._spinningSpeed = obj.speed;
@@ -95,30 +114,34 @@ export class ReelHandler extends Component {
     }
 
     stop() {
-        if (!this._isSpinning || this._isStopping) return;
-
-        this._isStopping = true;
-
-        if (this._currentTween) {
-            this._currentTween.stop();
-            this._currentTween = null;
+        if (!this._isSpinning || this._isStopping) {
+            return;
         }
 
-        let obj = {speed: this._spinningSpeed};
+        this._isStopping = true;
+        this.resetCurrentTween();
 
+        let obj = {speed: this._spinningSpeed};
         this._currentTween = tween(obj)
-            .to(0.5, {speed: 0}, {
+            .to(this._spinAccelerationDuration, {speed: 0}, {
                 easing: 'quadOut',
                 onUpdate: () => {
                     this._spinningSpeed = obj.speed;
                 },
-                onComplete: () => {
-                    this._isSpinning = false;
-                    this._spinningSpeed = 0;
-                    this.reorderReel();
-                }
+            })
+            .call(() => {
+                this._isSpinning = false;
+                this._spinningSpeed = 0;
+                this.reorderReel();
             })
             .start();
+    }
+
+    private resetCurrentTween() {
+        if (this._currentTween) {
+            this._currentTween.stop();
+            this._currentTween = null;
+        }
     }
 
     getCenterSymbol(): SlotSymbol {
@@ -134,15 +157,25 @@ export class ReelHandler extends Component {
     }
 
     forceSymbolAtPositionIndex(winningSymbolIndex: number, positionIndex: number) {
-        const height = -this._symbolHeight * positionIndex;
+        if (!this._spinDownside) {
+            positionIndex += 3;
+            positionIndex *= -1;
+        }
+
+        let height = this._symbolHeight * positionIndex;
         const closestSymbol = this._symbols.reduce((prev, curr) => {
             return Math.abs(curr.node.position.y - height) < Math.abs(prev.node.position.y - height) ? curr : prev;
         });
 
-        closestSymbol.iconSprite.spriteFrame = this._slotIcons[winningSymbolIndex];
-        closestSymbol.identifier = winningSymbolIndex;
+        this.setWinningSymbol(closestSymbol, winningSymbolIndex);
 
         //closestSymbol.setBackgroundColor(Color.BLUE);
+    }
+
+    setWinningSymbol(closestSymbol: SlotSymbol, winningSymbolIndex: number) {
+        closestSymbol.iconSprite.spriteFrame = this._slotIcons[winningSymbolIndex];
+        closestSymbol.identifier = winningSymbolIndex;
+        closestSymbol.isFixed = true;
     }
 
     private reorderReel() {
@@ -159,14 +192,21 @@ export class ReelHandler extends Component {
 
         for (let i = 0; i < this._symbols.length; i++) {
             const y = -i * this._symbolHeight - this._symbolHeight / 2;
-            this._symbols[i].node.setPosition(0, y, 0);
+            tween(this._symbols[i].node)
+                .to(this._finalSymbolAdjustmentTime, {position: new Vec3(0, y, 0)}, {
+                    easing: 'quadOut',
+                })
+                .start();
         }
     }
 
     private updateSymbol(symbol: SlotSymbol) {
+        if (symbol.isFixed) {
+            return;
+        }
+
         const index = this.getRandomSymbolIndex();
         symbol.iconSprite.spriteFrame = this._slotIcons[index];
         symbol.identifier = index;
     }
-
 }

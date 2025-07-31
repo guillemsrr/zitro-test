@@ -11,6 +11,9 @@ export class SlotSymbol extends Component {
     @property(Sprite)
     iconSprite: Sprite;
 
+    identifier: number = -1;
+    isFixed: boolean = false;
+
     @property(Sprite)
     backgroundSprite: Sprite;
 
@@ -22,8 +25,6 @@ export class SlotSymbol extends Component {
 
     @property(SpriteFrame)
     looseBackgroundSpriteFrame: SpriteFrame;
-
-    identifier: number = 0;
 
     start() {
         if (!this.iconSprite || !this.iconSprite.spriteFrame || !this.uiTransform) return;
@@ -55,6 +56,9 @@ export class SlotSymbol extends Component {
 
     reset() {
         this.backgroundSprite.spriteFrame = null;
+        this.setBackgroundColor(Color.WHITE);
+        this.isFixed = false;
+        this.identifier = -1;
     }
 
     setWinVisuals() {
