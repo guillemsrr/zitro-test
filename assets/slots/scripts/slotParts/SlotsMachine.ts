@@ -25,7 +25,9 @@ export class SlotsMachine extends Component {
     private _reels: ReelHandler[] = [];
 
     public readonly eventTarget = new EventTarget();
+    public readonly onSpinStart: string = 'onSpin';
     public readonly onWinEventName: string = 'onWin';
+    public readonly onLooseEventName: string = 'onLoose';
 
     start() {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
@@ -55,6 +57,8 @@ export class SlotsMachine extends Component {
                 }
             }, stopDelay + i * this._spinDelay);
         }
+
+        this.eventTarget.emit(this.onSpinStart);
     }
 
     private getStopDelay() {
@@ -91,6 +95,7 @@ export class SlotsMachine extends Component {
             return;
         }
 
+        this.eventTarget.emit(this.onLooseEventName);
         centerSymbols.forEach(symbol => {
             symbol.setLooseVisuals();
         })
