@@ -24,8 +24,8 @@ export class SlotsMachine extends Component {
 
     private _reels: ReelHandler[] = [];
 
-    eventTarget = new EventTarget();
-    onWinEventName: string = 'onWin';
+    public readonly eventTarget = new EventTarget();
+    public readonly onWinEventName: string = 'onWin';
 
     start() {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
