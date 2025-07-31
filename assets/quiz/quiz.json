@@ -103,19 +103,70 @@
       ]
     },
     {
-      "text": "What's 3+3?",
+      "text": "My precious.",
       "answers": [
         {
-          "text": "2",
-          "isCorrect": false
-        },
-        {
-          "text": "3",
-          "isCorrect": false
-        },
-        {
-          "text": "6",
+          "text": "Gollum",
           "isCorrect": true
+        },
+        {
+          "text": "Dobby",
+          "isCorrect": false
+        },
+        {
+          "text": "Yoda",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "text": "Say my name.",
+      "answers": [
+        {
+          "text": "Heisenberg",
+          "isCorrect": true
+        },
+        {
+          "text": "Superman",
+          "isCorrect": false
+        },
+        {
+          "text": "Mickey Mouse",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "text": "I am your father.",
+      "answers": [
+        {
+          "text": "Darth Vader",
+          "isCorrect": true
+        },
+        {
+          "text": "Gandalf",
+          "isCorrect": false
+        },
+        {
+          "text": "Dumbledore",
+          "isCorrect": true
+        }
+      ]
+    },
+    {
+      "text": "What if I told you everything you knew was a lie?",
+      "answers": [
+        {
+          "text": "Morpheus",
+          "isCorrect": true
+        },
+        {
+          "text": "Thanos",
+          "isCorrect": false
+        },
+        {
+          "text": "John Wick",
+          "isCorrect": false
         }
       ]
     }
