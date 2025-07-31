@@ -1,4 +1,4 @@
-import {_decorator, Button, Component, JsonAsset, Label, resources, EventTarget} from 'cc';
+import {_decorator, Button, Component, JsonAsset, Label, resources} from 'cc';
 import {QuestionData} from "db://assets/quiz/data/QuestionData";
 import {AnswerData} from "db://assets/quiz/data/AnswerData";
 import {AnswerButtonHandler} from "db://assets/quiz/AnswerButtonHandler";

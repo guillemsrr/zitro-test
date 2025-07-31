@@ -15,7 +15,7 @@ export class ReelHandler extends Component {
     private _symbolPrefab: Prefab;
 
     @property({type: SpriteFrame, visible: true})
-    private _slotIcons: SpriteFrame[] = [];
+    private _slotIcons: SpriteFrame[];
 
     @property({visible: true})
     private _numberSymbols: number = 10;
