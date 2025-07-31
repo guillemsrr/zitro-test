@@ -8,7 +8,7 @@ export class SceneLoaderButton extends Component {
     button: Button | null = null;
 
     @property({visible: true})
-    sceneName: string = "";
+    private sceneName: string = "";
 
     start() {
         this.button.node.on(Button.EventType.CLICK, this.loadScene, this);

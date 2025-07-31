@@ -7,7 +7,7 @@ const {ccclass, property} = _decorator;
 export class SplashScreenHandler extends Component {
 
     @property({type: ProgressBarHandler, visible: true})
-    _progressBar: ProgressBarHandler | null = null;
+    private _progressBar: ProgressBarHandler | null = null;
 
     @property
     public menuScene: string = 'menu';

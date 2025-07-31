@@ -8,22 +8,19 @@ const {ccclass, property} = _decorator;
 export class SlotsMachine extends Component {
 
     @property({type: Node, visible: true})
-    _reelsParent: Node;
+    private _reelsParent: Node;
 
     @property({type: Button, visible: true})
-    _spinButton: Button;
+    private _spinButton: Button;
 
     @property({type: Button, visible: true})
-    _forceWinButton: Button;
+    private _forceWinButton: Button;
 
     @property({visible: true})
-    _spinDelay: number = 2;
+    private _spinDelay: number = 2;
 
     @property({visible: true})
-    _spinTime: number = 3;
-
-    @property({visible: true})
-    _debug: boolean = false;
+    private _spinTime: number = 3;
 
     private _reels: ReelHandler[] = [];
 
@@ -34,11 +31,6 @@ export class SlotsMachine extends Component {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
         this._spinButton.node.on(Button.EventType.CLICK, this.startSpinning, this);
         this._forceWinButton.node.on(Button.EventType.CLICK, this.startWinSpin, this);
-
-        if (this._debug) {
-            //this._spinTime *= 0.5;
-            //this._spinDelay *= 0.5;
-        }
     }
 
     private startSpinning() {

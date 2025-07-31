@@ -21,7 +21,7 @@ export class QuizHandler extends Component {
     quizJson: JsonAsset | null = null;
 
     @property({type: QuizVisualsHandler, visible: true})
-    _quizVisualsHandler: QuizVisualsHandler;
+    private _quizVisualsHandler: QuizVisualsHandler;
 
     start() {
         //TODO: maybe use resources.load to load the JSON file dynamically

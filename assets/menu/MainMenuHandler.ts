@@ -12,10 +12,10 @@ export class MainMenuHandler extends Component {
     slotsButton: Button | null = null;
 
     @property({visible: true})
-    _quizSceneName: string = "quiz";
+    private _quizSceneName: string = "quiz";
 
     @property({visible: true})
-    _slotsSceneName: string = "slots";
+    private _slotsSceneName: string = "slots";
 
     start() {
         this.quizButton.node.on(Button.EventType.CLICK, this.OpenQuiz, this);

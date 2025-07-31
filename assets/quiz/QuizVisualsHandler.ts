@@ -1,16 +1,17 @@
-﻿import {_decorator, Component, EventTarget, tween, UIOpacity, Node} from 'cc';
+﻿import {_decorator, Component, tween, UIOpacity, Node} from 'cc';
 
 const {ccclass, property} = _decorator;
 
 @ccclass('QuizVisualsHandler')
 export class QuizVisualsHandler extends Component {
     @property({type: Node, visible: true})
-    _questionNode: Node;
+    private _questionNode: Node;
+
     @property({type: UIOpacity, visible: true})
-    _questionOpacity: UIOpacity;
+    private _questionOpacity: UIOpacity;
 
     @property({visible: true})
-    _fadeDuration: number = 2;
+    private _fadeDuration: number = 2;
 
     start() {
         this._questionOpacity.opacity = 0;
@@ -45,7 +46,6 @@ export class QuizVisualsHandler extends Component {
     }
 
     looseEffect() {
-        // Example shake animation
         const originalPos = this._questionNode.position.clone();
 
         tween(this._questionNode)

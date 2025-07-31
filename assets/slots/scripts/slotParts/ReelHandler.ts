@@ -6,25 +6,25 @@ const {ccclass, property} = _decorator;
 @ccclass('ReelHandler')
 export class ReelHandler extends Component {
     @property({type: Node, visible: true})
-    _symbolsParent: Node;
+    private _symbolsParent: Node;
 
     @property({type: Layout, visible: true})
-    _verticalLayout: Layout;
+    private _verticalLayout: Layout;
 
     @property({type: Prefab, visible: true})
-    _symbolPrefab: Prefab;
+    private _symbolPrefab: Prefab;
 
     @property({type: SpriteFrame, visible: true})
-    _slotIcons: SpriteFrame[] = [];
+    private _slotIcons: SpriteFrame[] = [];
 
     @property({visible: true})
-    _numberSymbols: number = 10;
+    private _numberSymbols: number = 10;
 
     @property({visible: true})
-    _symbolHeight: number = 120;
+    private _symbolHeight: number = 120;
 
     @property({visible: true})
-    _spinSpeed: number = 1500;
+    private _spinSpeed: number = 1500;
 
     private _symbols: SlotSymbol[] = [];
 
