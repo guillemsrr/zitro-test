@@ -32,16 +32,14 @@ export class SlotsWinHandler extends Component {
 
     @property({visible: true})
     private _winTextPulseDuration: number = 1;
-    
+
     @property({visible: true})
     private _winTextScale: number = 1.5;
 
     private _textAnimation: Tween<Node> | null = null;
 
     start() {
-        this._slotMachine.onWin = () => {
-            this.startWinEffect();
-        }
+        this._slotMachine.eventTarget.on(this._slotMachine.onWinEventName, this.startWinEffect, this);
     }
 
     private startWinEffect() {

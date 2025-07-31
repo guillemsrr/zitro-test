@@ -13,8 +13,11 @@ export class SplashScreenHandler extends Component {
     public menuScene: string = 'menu';
 
     start() {
-        this._progressBar.onLoadComplete = () => {
-            director.loadScene(this.menuScene);
-        }
+        this._progressBar.eventTarget.on(this._progressBar.onLoadEventName, this.loadMenu, this);
+
+    }
+
+    loadMenu() {
+        director.loadScene(this.menuScene);
     }
 }

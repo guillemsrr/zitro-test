@@ -1,4 +1,4 @@
-import {_decorator, Component, ProgressBar} from 'cc';
+import {_decorator, Component, ProgressBar, EventTarget} from 'cc';
 
 const {ccclass, property} = _decorator;
 
@@ -13,9 +13,9 @@ export class ProgressBarHandler extends Component {
 
     private _elapsedTime: number = 0;
 
-    public onLoadComplete: () => void = () => {
-    };
-
+    eventTarget = new EventTarget();
+    onLoadEventName: string = 'onLoadComplete';
+    
     start() {
         this._elapsedTime = 0;
 
@@ -32,7 +32,7 @@ export class ProgressBarHandler extends Component {
         this.progressBar.progress = progress;
 
         if (progress >= 1.0) {
-            this.onLoadComplete();
+            this.eventTarget.emit(this.onLoadEventName);
             this.node.active = false;
         }
     }

@@ -1,4 +1,4 @@
-import {_decorator, Button, Component, Node} from 'cc';
+import {_decorator, Button, Component, Node, EventTarget} from 'cc';
 import {ReelHandler} from "db://assets/slots/scripts/slotParts/ReelHandler";
 import {SlotSymbol} from "db://assets/slots/scripts/slotParts/SlotSymbol";
 
@@ -27,8 +27,8 @@ export class SlotsMachine extends Component {
 
     private _reels: ReelHandler[] = [];
 
-    public onWin: () => void = () => {
-    };
+    eventTarget = new EventTarget();
+    onWinEventName: string = 'onWin';
 
     start() {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
@@ -92,7 +92,7 @@ export class SlotsMachine extends Component {
         }
 
         if (centerSymbols[0].equals(centerSymbols[1]) && centerSymbols[1].equals(centerSymbols[2])) {
-            this.onWin();
+            this.eventTarget.emit(this.onWinEventName);
             centerSymbols.forEach(symbol => {
                 symbol.setWinVisuals();
             })
