@@ -1,6 +1,6 @@
 import {_decorator, Button, Component, Node} from 'cc';
-import {ReelHandler} from "db://assets/slots/ReelHandler";
-import {SlotSymbol} from "db://assets/slots/SlotSymbol";
+import {ReelHandler} from "db://assets/slots/scripts/slotParts/ReelHandler";
+import {SlotSymbol} from "db://assets/slots/scripts/slotParts/SlotSymbol";
 
 const {ccclass, property} = _decorator;
 
@@ -22,6 +22,9 @@ export class SlotsMachine extends Component {
     @property({visible: true})
     _spinTime: number = 3;
 
+    @property({visible: true})
+    _debug: boolean = false;
+
     private _reels: ReelHandler[] = [];
 
     public onWin: () => void = () => {
@@ -31,6 +34,11 @@ export class SlotsMachine extends Component {
         this._reels = this._reelsParent.getComponentsInChildren(ReelHandler);
         this._spinButton.node.on(Button.EventType.CLICK, this.startSpinning, this);
         this._forceWinButton.node.on(Button.EventType.CLICK, this.startWinSpin, this);
+
+        if (this._debug) {
+            //this._spinTime *= 0.5;
+            //this._spinDelay *= 0.5;
+        }
     }
 
     private startSpinning() {
@@ -67,7 +75,7 @@ export class SlotsMachine extends Component {
 
         const stopDelay = this.getStopDelay();
         const winningSymbolIndex = this._reels[0].getRandomSymbolIndex();
-        const positionIndex = 3;
+        const positionIndex = 4;
         for (let i = 0; i < this._reels.length; i++) {
             this.scheduleOnce(() => {
                 this._reels[i].forceSymbolAtPositionIndex(winningSymbolIndex, positionIndex);

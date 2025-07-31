@@ -1200,9 +1200,9 @@
       }
     ],
     "_numberSymbols": 5,
-    "_symbolHeight": 120,
+    "_symbolHeight": 130,
     "_spinDuration": 3,
-    "_spinSpeed": 1000,
+    "_spinSpeed": 5000,
     "_id": ""
   },
   {

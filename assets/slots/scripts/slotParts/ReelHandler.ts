@@ -1,5 +1,5 @@
 ﻿import {_decorator, Component, Node, SpriteFrame, instantiate, Prefab, Layout, tween, Tween} from 'cc';
-import {SlotSymbol} from 'db://assets/slots/SlotSymbol';
+import {SlotSymbol} from 'db://assets/slots/scripts/slotParts/SlotSymbol';
 
 const {ccclass, property} = _decorator;
 
@@ -24,10 +24,7 @@ export class ReelHandler extends Component {
     _symbolHeight: number = 120;
 
     @property({visible: true})
-    _spinDuration: number = 3;
-
-    @property({visible: true})
-    _spinSpeed: number = 1000;
+    _spinSpeed: number = 1500;
 
     private _symbols: SlotSymbol[] = [];
 
@@ -35,7 +32,6 @@ export class ReelHandler extends Component {
     private _currentTween: Tween<any> | null = null;
     private _spinningSpeed: number = 0;
 
-    private _targetSpeed: number = 1000;
     private _isStopping: boolean = false;
 
     onLoad() {
@@ -89,7 +85,7 @@ export class ReelHandler extends Component {
 
         let obj = {speed: 0};
         this._currentTween = tween(obj)
-            .to(0.5, {speed: this._targetSpeed}, {
+            .to(0.5, {speed: this._spinSpeed}, {
                 easing: 'quadIn',
                 onUpdate: () => {
                     this._spinningSpeed = obj.speed;
