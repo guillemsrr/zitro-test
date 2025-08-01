@@ -14,7 +14,7 @@ Also for more convenience, I created a /scenes folder to store all scenes of the
 
 `SplashScreenHandler` listens for `ProgressBarHandler` for when it is loaded.
 
-I used [EventTarget]( https://docs.cocos.com/creator/3.4/manual/en/engine/event/event-emit.html#event-listening) exposed
+This class uses [EventTarget]( https://docs.cocos.com/creator/3.4/manual/en/engine/event/event-emit.html#event-listening) exposed
 in `ProgressBarHandler`:
 
 ```ts
@@ -22,7 +22,7 @@ public readonly eventTarget = new EventTarget();
 public readonly ON_LOAD_COMPLETE_EVENT: string = 'onLoadComplete';
 ```
 
-And in `SplashScreenHandler` I listen to the event, and when it is triggered, I load the menu scene.
+And in `SplashScreenHandler` listens to the event, and when it is triggered, it loads the menu scene.
 
 ```ts
 @property({visible: true})
@@ -47,23 +47,19 @@ I used `@property({visible: true})` to keep private attributes visible in the ed
 
 My first approach was to use `MainMenuHandler` to listen for the buttons click and load each scene.
 However, I realized that it was better to use the `SceneLoaderButton` component to listen the button clicks and load the
-scenes,
-that way I could reuse the same component for all buttons that load scenes, for example the "Return to menu" button.
+scenes, that way I could reuse the same component for all buttons that load scenes, not just in the Menu, for example the "Return to menu" button.
 
-I also decided to create a `SceneManager` Singleton to manage the scenes loading. This class would also contain the
-scenes names, that way if the team
-decided to change the scenes names, they would only need to change them in one place. Then the `SceneLoaderButton` would
-use the `SceneManager` to load the scenes.
-But as the `SceneManager` had to be instantiated to each scene that used it and in the editor I would need to set the
-scenes names manually anyways, I decided to remove it and use
-`SceneLoaderButton` + director.loadScene directly in these components, without the need of the scene manager singleton
-and over-engineering it.
+At first, I also decided to create a `SceneManager` Singleton to manage the scenes loading. This class would also contain the
+scene names, that way if the team decided to change their names, they would only need to change them in one place.
+The `SceneLoaderButton` would use the `SceneManager` to load the scenes, but as the `SceneManager` had to be instantiated to each scene that used it and in the editor I would need to set the
+scenes names manually anyways, I decided to remove it and use `SceneLoaderButton` + `director.loadScene` directly in these components, without the need of the scene manager singleton
+and so without over-engineering it (KISS principle!).
 
 ### Clock:
 
 `ClockHandler` updates and prints the clock every second. It fetches the time from an API using `TimeAPIBase` base class
 at start,
-scheduled every second.
+scheduled every second. (_fetchInterval)
 
 ```ts
 start() {
@@ -112,7 +108,7 @@ export type AnswerData = {
 };
 ```
 
-And so `QuizHandler` loads the questions from a JSON file referenced in the editor like this:
+And so `QuizHandler` loads the questions from a Json file referenced in the editor like this:
 
 ```ts
 const data = this._quizJson.json as { questions: QuestionData[] };
@@ -139,7 +135,7 @@ And calls `unsubcribeButtonsClickEvents` once any button is clicked to prevent m
 Now I actually see that I could have used a single event listener for all buttons and just check which button was
 clicked, but this way is more explicit, robust, and easier to understand.
 
-'QuizHandler` is in direct communication with `QuizVisualsHandler` to update the UI visuals, and waits for the animation
+`QuizHandler` is in direct communication with `QuizVisualsHandler` to update the UI visuals, and waits for the animation
 to finish before proceeding to the next phase.
 
 For example, it activates the buttons after the question animation is finished:
@@ -185,17 +181,16 @@ which are the reels that contain the symbols `SlotSymbol`.
 ### SlotsMachine
 
 `SlotsMachine` listens for both `_spinButton` and `_forceWinButton` click events to start the spin or force a win.
-To comply with the task timings, I used
-Coco's [Scheduler](https://docs.cocos.com/creator/3.8/manual/en/scripting/scheduler.html)  
-So when the spin button is clicked, it starts a timer that will trigger each reel `spin()` correctly delayed, as well as
+To comply with the task timings, I used Coco's [Scheduler](https://docs.cocos.com/creator/3.4/manual/en/scripting/scheduler.html#scheduler)  
+When the spin button is clicked, it starts a timer that will trigger each reel `spin()` correctly delayed, as well as
 the `stop()` methods.
 
-To check for the timers i created `printTimeMargin` to console.log the time margin between the current time and the
+To check for the timers I created `printTimeMargin` to "console.log" the time margin between the current time and the
 next, and I actually saw the logs weren't as precise as expected.
-That's because the scheduling can be affected by other factors, and will trigger the event as soon as possible, but not
+That's because the scheduling can be affected by other factors, and will trigger the event as soon as possible, not
 exactly at the scheduled time.
 
-The method `checkPrizes`:
+As for the method `checkPrizes`:
 
 ```ts
 checkPrizes() {
@@ -227,9 +222,9 @@ These events will be listened by `SlotsVisualsHandler` to update the UI accordin
 
 ### ReelHandler:
 
-Each reel structure is like follows:
-Reel
+Each reel structure is like follows:  
 
+Reel
 - Mask
 -
     - VerticalLayout
@@ -244,8 +239,7 @@ Reel
         - ...
 
 The Mask prevents the symbols from being visible outside the reel area, and the VerticalLayout arranges the symbols
-vertically, but just for the editor
-because it's disabled `onLoad`, to enable `SlotSymbols` to be positioned freely within the reel.
+vertically, but just for the editor, because it's disabled `onLoad`, to enable `SlotSymbols` to be positioned freely within the reel.
 
 `ReelHandler` places the symbols using `_symbolHeight` to calculate the y position of each symbol based on its index.
 y = 0 would be the top of the reel, and the calculation of the "out of bounds" will depend on the reel direction.
@@ -253,14 +247,14 @@ y = 0 would be the top of the reel, and the calculation of the "out of bounds" w
 There's `_spinDownside: boolean` attribute to determine if the reel spins downwards or upwards, by default it spins
 downwards.
 
-To create an accelerated spin effect, I used a `tween` to handle `_speed` and I could use `update(dt: number)` delta
-time to update the position of the symbols based on the speed by:
+To create an accelerated spin effect, I used a `tween` to handle `_spinSpeed` to use it with `update(dt: number)` delta
+time to update the position of the symbols based on the speed:
 
 ```ts
 let deltaY = this._spinningSpeed * dt;
 ```
 
-Iterating throuh the symbols and updating their position:
+And then iterating through the symbols and updating their position accordingly, per frame, as well as checking if they are out of bounds.
 
 ```ts
 for (const symbol of this._symbols) {
@@ -299,14 +293,14 @@ this._currentTween = tween(obj)
 
 This way I could control the speed of the spin and the acceleration/deceleration effect.
 
-When the reel `stop()` is called and finishes the tween, it calls for `reorderReel~~~~`:
-
+When the reel `stop()` is called and finishes the tween, it calls for `reorderReel()`.
 There it sorts the symbols by their y position, so the top symbol is the one with the highest y position after handling out of bound symbols.
+
 ```ts
 this._symbols.sort((a, b) => b.node.position.y - a.node.position.y);
 ```
 
-And instead of adjusting the symbols positions directly, I used a tween to animate their final positions smoothly.
+And instead of adjusting the symbols' positions directly, I used a tween to animate their final positions smoothly.
 ```ts
 for (let i = 0; i < this._symbols.length; i++) {
     const y = -i * this._symbolHeight - this._symbolHeight / 2;
@@ -372,7 +366,7 @@ forceSymbolAtPositionIndex(winningSymbolIndex: number, positionIndex: number) {
 This component is mainly responsible for the audio and visual feedback of the slots game.
 I used `AudioSource` + `AudioClip` to play the audio effects, and it activates an animated `_winTextNode`
 as well as instancing multiple `_winEffectPrefab` prefabs to create a visual effect when the player wins,
-which are a randomly positioned particles.
+which are randomly positioned particles controlled by `WinParticlesHandler`.
 
 --- 
 
@@ -412,7 +406,7 @@ updateScale(isLandscape: boolean) {
 ```
 
 ### ResponsiveWidget:
-Right now this component only handles the bottom anchor, but it can be extended to handle other anchors.
+Right now this component only handles the bottom anchor, but it can be extended to handle others.
 
 ```ts
 updateAlignment(isLandscape: boolean) {
