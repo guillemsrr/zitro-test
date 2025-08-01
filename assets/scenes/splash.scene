@@ -727,7 +727,7 @@
     "progressBar": {
       "__id__": 19
     },
-    "_minLoadTime": 2,
+    "_minLoadTime": 5,
     "_id": "dejZUX+R5GVaRXab+/SGS6"
   },
   {
@@ -902,7 +902,7 @@
     "_progressBar": {
       "__id__": 20
     },
-    "menuScene": "menu",
+    "_menuScene": "menu",
     "_id": "c3j9wREM9IibAFcDY3JGYJ"
   },
   {
