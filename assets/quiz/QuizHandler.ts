@@ -24,7 +24,6 @@ export class QuizHandler extends Component {
     private _quizVisualsHandler: QuizVisualsHandler;
 
     start() {
-        //TODO: maybe use resources.load to load the JSON file dynamically
         const data = this.quizJson.json as { questions: QuestionData[] };
         this._questions = data.questions;
         this.resetUnaskedQuestions();
@@ -36,8 +35,9 @@ export class QuizHandler extends Component {
 
         if (this._unaskedQuestions.length === 0) {
 
-            //TODO: game over, all questions have been asked
-            this.resetUnaskedQuestions();
+            //this.resetUnaskedQuestions();
+            this._quizVisualsHandler.showGameOver();
+            return;
         }
 
         const randomIndex: number = Math.floor(Math.random() * this._unaskedQuestions.length);
@@ -80,17 +80,18 @@ export class QuizHandler extends Component {
     }
 
     private handleAnswerButton(answer: AnswerData, answerButtonHandler: AnswerButtonHandler) {
-        if (answer.isCorrect) {
-            answerButtonHandler.playCorrectAnimation();
-        }
-        else {
-            answerButtonHandler.playIncorrectAnimation();
-        }
-
         this.deActivateButtons();
         this.unsubcribeButtonsClickEvents();
 
-        this._quizVisualsHandler.endQuestionAnimation(this.startRandomQuestion.bind(this));
+        if (answer.isCorrect) {
+            answerButtonHandler.playCorrectAnimation();
+            this._quizVisualsHandler.winEffect(this.startRandomQuestion.bind(this));
+        }
+        else {
+            answerButtonHandler.playIncorrectAnimation();
+            this._quizVisualsHandler.looseEffect(this.startRandomQuestion.bind(this));
+        }
+
     }
 
     private unsubcribeButtonsClickEvents() {

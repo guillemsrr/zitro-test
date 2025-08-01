@@ -1,7 +1,7 @@
 ﻿{
   "questions": [
     {
-      "text": "Which of the following are programming languages?",
+      "text": "Which of the following is a programming language?",
       "answers": [
         {
           "text": "TypeScript",
@@ -132,7 +132,7 @@
         },
         {
           "text": "Mickey Mouse",
-          "isCorrect": true
+          "isCorrect": false
         }
       ]
     },
@@ -149,7 +149,7 @@
         },
         {
           "text": "Dumbledore",
-          "isCorrect": true
+          "isCorrect": false
         }
       ]
     },

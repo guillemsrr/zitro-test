@@ -10,48 +10,86 @@ export class QuizVisualsHandler extends Component {
     @property({type: UIOpacity, visible: true})
     private _questionOpacity: UIOpacity;
 
-    @property({visible: true})
-    private _fadeDuration: number = 2;
+    @property({type: UIOpacity, visible: true})
+    private _buttonsOpacity: UIOpacity;
 
-    start() {
+    @property({visible: true})
+    private _questionFadeDuration: number = 1;
+
+    @property({visible: true})
+    private _buttonFadeDuration: number = 0.5;
+
+    @property({visible: true})
+    private _feedbackDuration: number = 2;
+
+    @property({visible: true})
+    private _winQuestionScale: number = 1.1;
+    @property({visible: true})
+    private _looseQuestionScale: number = 0.8;
+
+    @property({type: Node, visible: true})
+    private _gameOverNode: Node;
+
+    onLoad() {
         this._questionOpacity.opacity = 0;
+        this._buttonsOpacity.opacity = 0;
+        this._gameOverNode.active = false;
     }
 
     startQuestionAnimation(onFinished?: () => void) {
         tween(this._questionOpacity)
-            .to(this._fadeDuration, {opacity: 255})
+            .to(this._questionFadeDuration, {opacity: 255})
             .call(() => {
-                if (onFinished) onFinished();
+                tween(this._buttonsOpacity)
+                    .to(this._buttonFadeDuration, {opacity: 255})
+                    .call(() => {
+                        if (onFinished) onFinished();
+                    })
+                    .start();
             })
             .start();
     }
 
     endQuestionAnimation(onFinished?: () => void) {
-        tween(this._questionOpacity)
-            .to(this._fadeDuration, {opacity: 0})
-            .call(() => {
-                if (onFinished) onFinished();
-            })
-            .start();
+        this.scheduleOnce(() => {
+            tween(this._questionOpacity)
+                .to(this._questionFadeDuration, {opacity: 0})
+                .call(() => {
+                    if (onFinished) onFinished();
+                })
+                .start();
+
+            tween(this._buttonsOpacity)
+                .to(this._questionFadeDuration, {opacity: 0})
+                .start();
+        }, this._feedbackDuration);
     }
 
-    winEffect() {
+    winEffect(onFinished?: () => void) {
         const originalScale = this._questionNode.scale.clone();
-        const enlargedScale = originalScale.multiplyScalar(1.1);
+        const enlargedScale = originalScale.clone().multiplyScalar(this._winQuestionScale);
 
         tween(this._questionNode)
-            .to(0.15, {scale: enlargedScale})
-            .to(0.15, {scale: originalScale})
+            .to(this._feedbackDuration / 2, {scale: enlargedScale})
+            .to(this._feedbackDuration / 2, {scale: originalScale})
             .start();
+
+        this.endQuestionAnimation(onFinished);
     }
 
-    looseEffect() {
-        const originalPos = this._questionNode.position.clone();
+    looseEffect(onFinished?: () => void) {
+        const originalScale = this._questionNode.scale.clone();
+        const smallerScale = originalScale.clone().multiplyScalar(this._looseQuestionScale);
 
         tween(this._questionNode)
-            .to(0.05, {position: originalPos.add3f(5, 0, 0)})
-            .to(0.05, {position: originalPos.add3f(-5, 0, 0)})
-            .to(0.05, {position: originalPos})
+            .to(this._feedbackDuration / 2, {scale: smallerScale})
+            .to(this._feedbackDuration / 2, {scale: originalScale})
             .start();
+
+        this.endQuestionAnimation(onFinished);
+    }
+
+    showGameOver() {
+        this._gameOverNode.active = true;
     }
 }
