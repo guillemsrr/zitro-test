@@ -375,7 +375,7 @@ which are randomly positioned particles controlled by `WinParticlesHandler`.
 To ensure the game is responsive and adapts to different screen sizes, I created the singleton: `OrientationService`
 which binds to window resize events:
 ```ts
-private constructor() {
+constructor() {
     this.updateOrientation();
     window.addEventListener('orientationchange', this._onWindowChange.bind(this));
     window.addEventListener('resize', this._onWindowChange.bind(this));
