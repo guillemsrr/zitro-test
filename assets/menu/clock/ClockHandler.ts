@@ -13,7 +13,7 @@ export class ClockHandler extends Component {
     private _timeAPI: TimeAPIBase = new WorldTimeAPI(); //or TimeAPI for a currently working API, without fallback
 
     private _isFetching: boolean = false;
-    private _fetchInterval: number = 1;
+    private readonly _fetchInterval: number = 1;
 
     start() {
         this.timeLabel.string = "Fetching current time...";

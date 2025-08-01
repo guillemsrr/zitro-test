@@ -15,7 +15,7 @@ export class WinParticleHandler extends Component {
 
     private _angle: number = 0;
 
-    private _maxScreenWidth = 1200;
+    private readonly _maxScreenWidth = 1200;
 
     start() {
         this._angle = Math.random() * Math.PI * 2;

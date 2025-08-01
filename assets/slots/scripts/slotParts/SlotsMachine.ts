@@ -27,9 +27,9 @@ export class SlotsMachine extends Component {
     private _reels: ReelHandler[] = [];
 
     public readonly eventTarget = new EventTarget();
-    public readonly onSpinStart: string = 'onSpin';
-    public readonly onWinEventName: string = 'onWin';
-    public readonly onLooseEventName: string = 'onLoose';
+    public readonly ON_SPIN_START_EVENT_NAME: string = 'onSpin';
+    public readonly ON_WIN_EVENT_NAME: string = 'onWin';
+    public readonly ON_LOOSE_EVENT_NAME: string = 'onLoose';
 
     private _lastTime: number = 0;
     private _currentMargin: number = 0;
@@ -46,7 +46,7 @@ export class SlotsMachine extends Component {
         this._lastTime = game.totalTime;
         this._currentMargin = 0;
 
-        this.eventTarget.emit(this.onSpinStart);
+        this.eventTarget.emit(this.ON_SPIN_START_EVENT_NAME);
 
         for (let i = 0; i < this._reels.length; i++) {
             this._reels[i].reset();
@@ -89,27 +89,31 @@ export class SlotsMachine extends Component {
     }
 
     private checkPrizes() {
-        let centerSymbols: SlotSymbol[] = [];
-        for (let i = 0; i < this._reels.length; i++) {
-            const reel: ReelHandler = this._reels[i];
-            const centerSymbol: SlotSymbol = reel.getCenterSymbol();
-            centerSymbols.push(centerSymbol);
-        }
-
+        const centerSymbols: SlotSymbol[] = this.getCenterSymbols();
         if (centerSymbols[0].equals(centerSymbols[1]) && centerSymbols[1].equals(centerSymbols[2])) {
-            this.eventTarget.emit(this.onWinEventName);
+            this.eventTarget.emit(this.ON_WIN_EVENT_NAME);
             centerSymbols.forEach(symbol => {
                 symbol.setWinVisuals();
             })
             return;
         }
 
-        this.eventTarget.emit(this.onLooseEventName);
+        this.eventTarget.emit(this.ON_LOOSE_EVENT_NAME);
         centerSymbols.forEach(symbol => {
             symbol.setLooseVisuals();
         })
 
         this.activateButtons();
+    }
+
+    private getCenterSymbols(): SlotSymbol[] {
+        let centerSymbols: SlotSymbol[] = [];
+        for (let i = 0; i < this._reels.length; i++) {
+            const reel: ReelHandler = this._reels[i];
+            const centerSymbol: SlotSymbol = reel.getCenterSymbol();
+            centerSymbols.push(centerSymbol);
+        }
+        return centerSymbols;
     }
 
     public activateButtons() {

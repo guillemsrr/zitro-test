@@ -8,23 +8,23 @@ const {ccclass, property} = _decorator;
 
 @ccclass('QuizHandler')
 export class QuizHandler extends Component {
-    @property(Label)
-    questionLabel: Label | null = null;
+    @property({type: Label, visible: true})
+    private _questionLabel: Label | null = null;
 
-    @property([AnswerButtonHandler])
-    answerButtons: AnswerButtonHandler[] = [];
+    @property({type: [AnswerButtonHandler], visible: true})
+    private _answerButtons: AnswerButtonHandler[] = [];
 
     private _questions: QuestionData[] = [];
     private _unaskedQuestions: QuestionData[] = [];
 
-    @property(JsonAsset)
-    quizJson: JsonAsset | null = null;
+    @property({type: JsonAsset, visible: true})
+    private _quizJson: JsonAsset | null = null;
 
     @property({type: QuizVisualsHandler, visible: true})
     private _quizVisualsHandler: QuizVisualsHandler;
 
     start() {
-        const data = this.quizJson.json as { questions: QuestionData[] };
+        const data = this._quizJson.json as { questions: QuestionData[] };
         this._questions = data.questions;
         this.resetUnaskedQuestions();
         this.startRandomQuestion();
@@ -34,8 +34,6 @@ export class QuizHandler extends Component {
         this.deActivateButtons();
 
         if (this._unaskedQuestions.length === 0) {
-
-            //this.resetUnaskedQuestions();
             this._quizVisualsHandler.showGameOver();
             return;
         }
@@ -43,16 +41,16 @@ export class QuizHandler extends Component {
         const randomIndex: number = Math.floor(Math.random() * this._unaskedQuestions.length);
         const question: QuestionData = this._unaskedQuestions[randomIndex];
         this._unaskedQuestions.splice(randomIndex, 1);
-        this.questionLabel.string = question.text;
+        this._questionLabel.string = question.text;
 
         let answers = [...question.answers]
         answers = answers.sort(() => Math.random() - 0.5);
         answers.forEach((answer: AnswerData, index) => {
-            if (index > this.answerButtons.length) {
+            if (index > this._answerButtons.length) {
                 return;
             }
 
-            const answerButtonHandler: AnswerButtonHandler = this.answerButtons[index];
+            const answerButtonHandler: AnswerButtonHandler = this._answerButtons[index];
             answerButtonHandler.reset();
             answerButtonHandler.label.string = answer.text;
             answerButtonHandler.button.node.on(Button.EventType.CLICK, () => {
@@ -64,13 +62,13 @@ export class QuizHandler extends Component {
     }
 
     private deActivateButtons() {
-        this.answerButtons.forEach(answerButton => {
+        this._answerButtons.forEach(answerButton => {
             answerButton.button.interactable = false;
         })
     }
 
     private activateButtons() {
-        this.answerButtons.forEach(answerButton => {
+        this._answerButtons.forEach(answerButton => {
             answerButton.button.interactable = true;
         })
     }
@@ -91,11 +89,10 @@ export class QuizHandler extends Component {
             answerButtonHandler.playIncorrectAnimation();
             this._quizVisualsHandler.looseEffect(this.startRandomQuestion.bind(this));
         }
-
     }
 
     private unsubcribeButtonsClickEvents() {
-        this.answerButtons.forEach(answerButton => {
+        this._answerButtons.forEach(answerButton => {
             answerButton.button.node.off(Button.EventType.CLICK);
         });
     }

@@ -13,8 +13,8 @@ export class ProgressBarHandler extends Component {
 
     private _elapsedTime: number = 0;
 
-    eventTarget = new EventTarget();
-    onLoadEventName: string = 'onLoadComplete';
+    public readonly eventTarget = new EventTarget();
+    public readonly ON_LOAD_COMPLETE_EVENT: string = 'onLoadComplete';
     
     start() {
         this._elapsedTime = 0;
@@ -32,7 +32,7 @@ export class ProgressBarHandler extends Component {
         this.progressBar.progress = progress;
 
         if (progress >= 1.0) {
-            this.eventTarget.emit(this.onLoadEventName);
+            this.eventTarget.emit(this.ON_LOAD_COMPLETE_EVENT);
             this.node.active = false;
         }
     }

@@ -28,7 +28,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 104
+      "__id__": 110
     },
     "_id": "6e086574-f31c-4338-b324-f3c2b3b2b10f"
   },
@@ -1832,15 +1832,15 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "questionLabel": {
+    "_questionLabel": {
       "__id__": 43
     },
-    "answerButtons": [
+    "_answerButtons": [
       null,
       null,
       null
     ],
-    "quizJson": {
+    "_quizJson": {
       "__uuid__": "a3abce37-20b4-4453-a090-4c0c45ad8060",
       "__expectedType__": "cc.JsonAsset"
     },
@@ -2093,6 +2093,15 @@
       },
       {
         "__id__": 102
+      },
+      {
+        "__id__": 104
+      },
+      {
+        "__id__": 106
+      },
+      {
+        "__id__": 108
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -2202,21 +2211,90 @@
     ]
   },
   {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 85
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "_answerButtons",
+      "0"
+    ],
+    "target": {
+      "__id__": 48
+    },
+    "targetInfo": {
+      "__id__": 105
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "ff5RhskNFA7JHzw8BB8yfE"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 85
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "_answerButtons",
+      "1"
+    ],
+    "target": {
+      "__id__": 59
+    },
+    "targetInfo": {
+      "__id__": 107
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "ff5RhskNFA7JHzw8BB8yfE"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 85
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "_answerButtons",
+      "2"
+    ],
+    "target": {
+      "__id__": 67
+    },
+    "targetInfo": {
+      "__id__": 109
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "ff5RhskNFA7JHzw8BB8yfE"
+    ]
+  },
+  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 105
+      "__id__": 111
     },
     "shadows": {
-      "__id__": 106
+      "__id__": 112
     },
     "_skybox": {
-      "__id__": 107
+      "__id__": 113
     },
     "fog": {
-      "__id__": 108
+      "__id__": 114
     },
     "octree": {
-      "__id__": 109
+      "__id__": 115
     }
   },
   {

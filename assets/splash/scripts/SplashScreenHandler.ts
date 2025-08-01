@@ -9,15 +9,14 @@ export class SplashScreenHandler extends Component {
     @property({type: ProgressBarHandler, visible: true})
     private _progressBar: ProgressBarHandler | null = null;
 
-    @property
-    public menuScene: string = 'menu';
+    @property({visible: true})
+    private _menuScene: string = 'menu';
 
     start() {
-        this._progressBar.eventTarget.on(this._progressBar.onLoadEventName, this.loadMenu, this);
-
+        this._progressBar.eventTarget.on(this._progressBar.ON_LOAD_COMPLETE_EVENT, this.loadMenu, this);
     }
 
     loadMenu() {
-        director.loadScene(this.menuScene);
+        director.loadScene(this._menuScene);
     }
 }

@@ -51,9 +51,9 @@ export class SlotsVisualHandler extends Component {
     private _textAnimation: Tween<Node> | null = null;
 
     start() {
-        this._slotMachine.eventTarget.on(this._slotMachine.onSpinStart, this.startSpinSound, this);
-        this._slotMachine.eventTarget.on(this._slotMachine.onWinEventName, this.startWinEffect, this);
-        this._slotMachine.eventTarget.on(this._slotMachine.onLooseEventName, this.looseEffect, this);
+        this._slotMachine.eventTarget.on(this._slotMachine.ON_SPIN_START_EVENT_NAME, this.startSpinSound, this);
+        this._slotMachine.eventTarget.on(this._slotMachine.ON_WIN_EVENT_NAME, this.startWinEffect, this);
+        this._slotMachine.eventTarget.on(this._slotMachine.ON_LOOSE_EVENT_NAME, this.looseEffect, this);
     }
 
     private startWinEffect() {
