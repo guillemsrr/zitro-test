@@ -24,6 +24,7 @@ export class QuizVisualsHandler extends Component {
 
     @property({visible: true})
     private _winQuestionScale: number = 1.1;
+    
     @property({visible: true})
     private _looseQuestionScale: number = 0.8;
 

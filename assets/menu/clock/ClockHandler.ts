@@ -1,6 +1,7 @@
 ﻿import {_decorator, Component, Label} from 'cc';
 import {TimeAPIBase, TimeData} from "db://assets/menu/clock/api/TimeAPIBase";
 import {TimeAPI} from "db://assets/menu/clock/api/TimeAPI";
+import {WorldTimeAPI} from "db://assets/menu/clock/api/WorldTimeAPI";
 
 const {ccclass, property} = _decorator;
 
@@ -9,7 +10,7 @@ export class ClockHandler extends Component {
     @property(Label)
     timeLabel: Label | null = null;
 
-    private _timeAPI: TimeAPIBase = new TimeAPI(); //or WorldTimeAPI
+    private _timeAPI: TimeAPIBase = new WorldTimeAPI(); //or TimeAPI for a currently working API, without fallback
 
     private _isFetching: boolean = false;
     private _fetchInterval: number = 1;

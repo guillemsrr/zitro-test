@@ -6,7 +6,15 @@
 
 export abstract class TimeAPIBase {
 
-    abstract getCurrentTime(): Promise<TimeData>;
+    async getCurrentTime(): Promise<TimeData> {
+        const time: TimeData = await this.parseCurrentTime();
+        if (!time) {
+            return this.getFallbackTime();
+        }
+        return time;
+    }
+
+    protected abstract parseCurrentTime(): Promise<TimeData>;
 
     protected abstract getAPI(): string;
 
@@ -31,5 +39,14 @@ export abstract class TimeAPIBase {
             console.error("Error while fetching data:", error);
             return null;
         }
+    }
+
+    protected getFallbackTime(): TimeData {
+        const now = new Date();
+        return {
+            hour: now.getHours(),
+            minute: now.getMinutes(),
+            seconds: now.getSeconds(),
+        };
     }
 }

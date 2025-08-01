@@ -1842,8 +1842,11 @@
     "_buttonsOpacity": {
       "__id__": 80
     },
-    "_fadeDuration": 1,
+    "_questionFadeDuration": 1,
+    "_buttonFadeDuration": 0.5,
     "_feedbackDuration": 2,
+    "_winQuestionScale": 1.1,
+    "_looseQuestionScale": 0.8,
     "_gameOverNode": {
       "__id__": 37
     },
