@@ -1,4 +1,4 @@
-﻿import {_decorator, Component, tween, UIOpacity, Node} from 'cc';
+﻿import {_decorator, Component, tween, UIOpacity, Node, Animation} from 'cc';
 
 const {ccclass, property} = _decorator;
 
@@ -12,6 +12,9 @@ export class QuizVisualsHandler extends Component {
 
     @property({type: UIOpacity, visible: true})
     private _buttonsOpacity: UIOpacity;
+    
+    @property({type: Animation, visible: true})
+    private _questionAnimation: Animation;
 
     @property({visible: true})
     private _questionFadeDuration: number = 1;
@@ -38,6 +41,9 @@ export class QuizVisualsHandler extends Component {
     }
 
     startQuestionAnimation(onFinished?: () => void) {
+
+        this._questionAnimation.play();
+        
         tween(this._questionOpacity)
             .to(this._questionFadeDuration, {opacity: 255})
             .call(() => {
